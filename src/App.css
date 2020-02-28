@@ -6,17 +6,22 @@
   height: 40vmin;
   pointer-events: none;
 }
-body, html, #root {
+body,
+html,
+#root {
   height: 100%;
 }
-img {max-width: 100%;}
+img {
+  max-width: 100%;
+}
 .sidebar {
-  background: #070D59;
+  background: #070d59;
   padding: 40px 15px;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: fixed;
 }
 .logo {
   display: block;
@@ -34,10 +39,9 @@ img {max-width: 100%;}
   padding: 0;
   margin: 0;
   list-style: none;
-  overflow: scroll;
-  height: 300px;
+  overflow: auto;
+  height: 420px;
   width: 100%;
-
 }
 .files-list .media {
   padding: 20px 15px;
@@ -60,27 +64,30 @@ img {max-width: 100%;}
   margin-bottom: 0;
 }
 .upload-btn {
-  background: #F7B633;
+  background: #f7b633;
   width: 100%;
-  font-size: 22px;
-  color: #FFFFFF;
-  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
   border-radius: 10px;
-  padding: 18px 0;
+}
+.upload-btn input {
+  position: absolute;
+  opacity: 0;
+  width: auto;
 }
 
 .btn-file {
   position: relative;
-    overflow: hidden;
-    border-radius: 15px;
-    width: 100%;
-    height: 50px;
-    font-size: 18px;
-    text-align: center;
-    background: #F7B633;
+  overflow: hidden;
+  border-radius: 15px;
+  width: 100%;
+  height: 50px;
+  font-size: 18px;
+  text-align: center;
+  background: #f7b633;
 }
 
-.btn-file input[type=file] {
+.btn-file input[type="file"] {
   position: absolute;
   top: 0;
   right: 0;
@@ -90,10 +97,13 @@ img {max-width: 100%;}
   text-align: right;
   filter: alpha(opacity=0);
   opacity: 0;
-  outline: none;   
+  outline: none;
   cursor: inherit;
   display: block;
 }
+/* .ui[class*="two column"].grid>.column:not(.row), .ui[class*="two column"].grid>.row>.column{
+  width: 100% !important;
+} */
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

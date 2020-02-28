@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Header, Grid, Form } from "semantic-ui-react";
+import { Container, Header, Grid } from "semantic-ui-react";
 import { Document, Page } from "react-pdf";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -19,13 +19,20 @@ class App extends React.Component {
   onFileChange = event => {
     event.preventDefault();
     if (event.target.files[0] !== undefined) {
+      var ext = event.target.files[0].name;
+      var pos = ext.lastIndexOf(".");
+      if (ext.slice(pos + 1) != "pdf") {
+        alert("Please select a pdf file ");
+        return false;
+      }
+
       const userRefpdf = [...this.state.userPdf, event.target.files[0]];
-      console.log("userref obj", userRefpdf);
+
       this.setState(
         {
           file: event.target.files[0],
           userPdf: userRefpdf,
-          selectedIndex: 1,
+          selectedIndex: 1
         },
         () => {
           document.getElementById("file").value = null;
@@ -38,7 +45,9 @@ class App extends React.Component {
   previewImageReset = (data, index) => {
     this.setState({
       file: data,
-      selectedIndex: index + 1
+      selectedIndex: index + 1,
+      numPages: 0,
+      pageNumber: 1
     });
   };
 
@@ -61,7 +70,6 @@ class App extends React.Component {
     });
   };
 
-
   render() {
     const { pageNumber, numPages } = this.state;
 
@@ -72,12 +80,12 @@ class App extends React.Component {
             <div className="sidebar">
               <div className="top-section">
                 <a href="#" className="logo">
-                  <img src={Logo} />
+                  <img src={Logo} alt="logo" />
                 </a>
 
                 <div className="files-label">Files</div>
 
-                <ul className="list-unstyled files-list" >
+                <ul className="list-unstyled files-list">
                   {this.state.userPdf.length > 0
                     ? this.state.userPdf.map((item, i) => (
                         <li className="media mb-3" key={i}>
@@ -88,11 +96,13 @@ class App extends React.Component {
                           />
                           <div className="media-body">
                             <h5 className="mt-0 mb-1">
-                              <a onClick={() => this.previewImageReset(item, i)}>
+                              <a
+                                href="#"
+                                onClick={() => this.previewImageReset(item, i)}
+                              >
                                 {/* {item.name}  */} Document {i + 1}
                               </a>
                             </h5>
-                            {/* <p>Nam vel porta velit</p> */}
                           </div>
                         </li>
                       ))
@@ -102,10 +112,14 @@ class App extends React.Component {
 
               <div className="bottom-section">
                 <button className="btn upload-btn">
-
-                  <input type="file" id="file" onChange={this.onFileChange} />
-                  {/* <img src={UploadIcon} className="mr-2" /> */}
-                  {/* Upload Files */}
+                  <input
+                    type="file"
+                    id="file"
+                    accept=".pdf"
+                    onChange={this.onFileChange}
+                  />
+                  <img src={UploadIcon} className="mr-2" alt="upload image" />
+                  Upload Files
                 </button>
               </div>
             </div>
@@ -113,13 +127,15 @@ class App extends React.Component {
           <div className="col-9 h-100">
             <Container>
               <br />
-              <Header textAlign="center">Document {this.state.selectedIndex}</Header>
-              <Grid centered columns={2}>
-                <Grid.Column textAlign="center" onClick={this.nextPage}>
+              <Header textAlign="left">
+                Document {this.state.selectedIndex}
+              </Header>
+              <Grid centered>
+                <Grid.Column textAlign="left" onClick={this.nextPage}>
                   <Document
                     file={this.state.file}
                     onLoadSuccess={this.onDocumentLoadSuccess}
-                    noData={<h4>No document selected.</h4>}
+                    noData={<h4>Please select a file</h4>}
                   >
                     <Page pageNumber={pageNumber} />
                   </Document>
